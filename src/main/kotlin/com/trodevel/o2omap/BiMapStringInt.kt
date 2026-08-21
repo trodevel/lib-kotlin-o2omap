@@ -30,6 +30,10 @@ class BiMapStringInt(
         return intToString[intId] ?: throw NoSuchElementException("ID $intId not found")
     }
 
+    fun getMapping(): Map<String, Int> {
+        return stringToInt.toMap()
+    }
+
     private fun add(record: Record) {
         stringToInt[record.originalId] = record.intId
         intToString[record.intId] = record.originalId

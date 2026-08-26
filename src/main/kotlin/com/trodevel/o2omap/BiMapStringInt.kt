@@ -17,6 +17,10 @@ class BiMapStringInt(
         load()
     }
 
+    fun findId(originalId: String): Int {
+        return stringToInt[originalId] ?: 0
+    }
+
     fun findIdOrAdd(originalId: String): Int {
         stringToInt[originalId]?.let { return it }
         

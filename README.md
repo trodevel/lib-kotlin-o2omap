@@ -13,7 +13,7 @@
 
 ```kotlin
 import com.trodevel.o2omap.BiMapStringInt
-import com.trodevel.o2omap.IUniqueIdGenerator
+import com.trodevel.uniqueidgenerator.IUniqueIdGenerator
 import java.io.File
 
 val generator = object : IUniqueIdGenerator {

@@ -9,6 +9,11 @@
 - **Persistence**: Save to and load from text storage file with version header validation.
 - **Validation**: Enforces 1:1 mapping consistency.
 
+## Dependencies
+
+- **`uniqueidgenerator`** (`com.trodevel.uniqueidgenerator`): Provides `IUniqueIdGenerator` for generating unique integer IDs.
+- **`stringcodec`** (`com.trodevel.stringcodec`): Provides `StringCodec` for safe single-line string encoding during persistence.
+
 ## Usage
 
 ```kotlin

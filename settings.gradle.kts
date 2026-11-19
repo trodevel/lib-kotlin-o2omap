@@ -20,4 +20,4 @@ include(":uniqueidgenerator")
 project(":uniqueidgenerator").projectDir = File("../uniqueidgenerator")
 
 include(":stringcodec")
-project(":stringcodec").projectDir = File("../../stringcodec")
+project(":stringcodec").projectDir = File("../stringcodec")

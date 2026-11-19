@@ -15,8 +15,9 @@ dependencyResolutionManagement {
 
 rootProject.name = "o2omap"
 
-include(":generickeyvalueregistry")
-project(":generickeyvalueregistry").projectDir = File("../generic_key_value_registry")
 
 include(":uniqueidgenerator")
 project(":uniqueidgenerator").projectDir = File("../uniqueidgenerator")
+
+include(":stringcodec")
+project(":stringcodec").projectDir = File("../../stringcodec")

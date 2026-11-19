@@ -1,6 +1,6 @@
 package com.trodevel.o2omap
 
-import com.trodevel.generickeyvalueregistry.StringCodec
+import com.trodevel.stringcodec.StringCodec
 import com.trodevel.uniqueidgenerator.IUniqueIdGenerator
 import java.io.File
 import java.io.IOException

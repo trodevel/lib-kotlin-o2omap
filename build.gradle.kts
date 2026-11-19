@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
-    implementation(project(":generickeyvalueregistry"))
+    implementation(project(":stringcodec"))
     implementation(project(":uniqueidgenerator"))
     testImplementation("junit:junit:4.13.2")
 }

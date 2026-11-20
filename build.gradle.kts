@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.trodevel.o2omap"
-version = "1.0.0"
+version = "1.1.0"
 
 android {
     namespace = "com.trodevel.o2omap"
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
-    implementation(project(":generickeyvalueregistry"))
+    implementation(project(":stringcodec"))
     implementation(project(":uniqueidgenerator"))
     testImplementation("junit:junit:4.13.2")
 }

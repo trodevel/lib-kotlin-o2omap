@@ -12,8 +12,7 @@ class BiMapStringInt(
     private val stringToInt = mutableMapOf<String, Int>()
     private val intToString = mutableMapOf<Int, String>()
 
-    var isDirty: Boolean = false
-        private set
+    private var isDirty: Boolean = false
 
     private data class Record(val originalId: String, val intId: Int)
 

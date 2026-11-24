@@ -6,7 +6,7 @@
 
 - **Bidirectional lookup**: String-to-Int (`findId`, `findIdOrAdd`) and Int-to-String (`findOriginalId`).
 - **Auto ID generation**: Assigns unique integer IDs using `IUniqueIdGenerator`.
-- **Dirty Flag Optimization**: `isDirty` property tracks unsaved in-memory mutations. `save()` is a no-op if `isDirty` is `false`, avoiding unnecessary disk I/O operations.
+- **Dirty Flag Optimization**: An internal `isDirty` flag tracks unsaved in-memory mutations. `save()` is a no-op if no new mappings have been added, avoiding unnecessary disk I/O operations.
 - **Persistence**: Save to and load from text storage file with `O2OMAP` header validation.
 - **Validation**: Enforces 1:1 mapping consistency.
 
@@ -30,12 +30,9 @@ val generator = object : IUniqueIdGenerator {
 val file = File("mapping.map")
 val biMap = BiMapStringInt(generator, file)
 
-// Assign or retrieve ID (sets isDirty = true if a new key is added)
+// Assign or retrieve ID
 val id = biMap.findIdOrAdd("my_unique_string_key")
 
-// Check if unsaved changes exist
-if (biMap.isDirty) {
-    // Save to disk (resets isDirty = false upon success)
-    biMap.save()
-}
+// Save to disk (performs I/O only if new keys were added)
+biMap.save()
 ```

@@ -68,41 +68,29 @@ class BiMapStringIntTest {
     }
 
     @Test
-    fun testDirtyFlag() {
+    fun testDirtySaveBehavior() {
         val file = tempFolder.newFile("test_dirty.map")
+        assertTrue(file.delete()) // Ensure file starts non-existent
         val biMap = BiMapStringInt(TestIdGenerator(1), file)
 
-        // Initially not dirty
-        assertFalse(biMap.isDirty)
-
-        // Adding new key marks as dirty
-        biMap.findIdOrAdd("key1")
-        assertTrue(biMap.isDirty)
-
-        // Save resets dirty flag
+        // Initially clean, save should be no-op and not create file
         biMap.save()
-        assertFalse(biMap.isDirty)
+        assertFalse(file.exists())
 
-        // Accessing existing key does not set dirty flag
+        // Adding a new key marks map as dirty
         biMap.findIdOrAdd("key1")
-        assertFalse(biMap.isDirty)
+        biMap.save()
+        assertTrue(file.exists()) // save wrote to file
 
-        // Deleting file to test save skips when not dirty
+        // Delete file to verify save is a no-op when querying existing keys
         assertTrue(file.delete())
+        biMap.findIdOrAdd("key1") // Existing key -> does not set dirty flag
         biMap.save()
         assertFalse(file.exists()) // save skipped because not dirty
 
-        // Adding a new key sets dirty flag again
+        // Adding a new key marks map as dirty again
         biMap.findIdOrAdd("key2")
-        assertTrue(biMap.isDirty)
-
-        // Save recreates file and resets dirty flag
         biMap.save()
-        assertFalse(biMap.isDirty)
-        assertTrue(file.exists())
-
-        // Loading from file starts with isDirty = false
-        val loadedBiMap = BiMapStringInt(TestIdGenerator(100), file)
-        assertFalse(loadedBiMap.isDirty)
+        assertTrue(file.exists()) // save wrote to file
     }
 }

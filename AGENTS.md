@@ -18,7 +18,8 @@ This document provides architectural guidance and technical standards for AI age
 ## Key Architectural Patterns & Guidelines
 
 ### 1. Dirty Flag State (`isDirty`)
-- **Initialization:** Upon creation / `load()`, `isDirty` is set to `false`.
+- **Visibility:** Private variable (`private var isDirty: Boolean = false`).
+- **Initialization:** Set to `false` upon creation / `load()`.
 - **Mutation:** `findIdOrAdd(originalId)` sets `isDirty = true` ONLY when `originalId` is not present in the map and a new ID is generated. Querying existing keys does not change `isDirty`.
 - **Persistence Bypass:** `save()` evaluates `if (!isDirty) return`. File I/O is skipped if no new keys have been added.
 - **Reset:** `save()` resets `isDirty = false` after successfully writing all records to disk.

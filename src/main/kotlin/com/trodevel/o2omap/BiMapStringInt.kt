@@ -12,6 +12,9 @@ class BiMapStringInt(
     private val stringToInt = mutableMapOf<String, Int>()
     private val intToString = mutableMapOf<Int, String>()
 
+    var isDirty: Boolean = false
+        private set
+
     private data class Record(val originalId: String, val intId: Int)
 
     init {
@@ -28,6 +31,7 @@ class BiMapStringInt(
         val newId = idGenerator.getNextId()
         stringToInt[originalId] = newId
         intToString[newId] = originalId
+        isDirty = true
         return newId
     }
 
@@ -80,9 +84,11 @@ class BiMapStringInt(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        isDirty = false
     }
 
     fun save() {
+        if (!isDirty) return
         try {
             storageFile.printWriter().use { out ->
                 out.println("O2OMAP")
@@ -92,6 +98,7 @@ class BiMapStringInt(
                     out.println("${StringCodec.encode(s)} $i")
                 }
             }
+            isDirty = false
         } catch (e: Exception) {
             e.printStackTrace()
         }

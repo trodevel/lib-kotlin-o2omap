@@ -2,7 +2,9 @@ package com.trodevel.o2omap
 
 import com.trodevel.uniqueidgenerator.IUniqueIdGenerator
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -63,5 +65,44 @@ class BiMapStringIntTest {
         assertThrows(NoSuchElementException::class.java) {
             biMap.findOriginalId(999)
         }
+    }
+
+    @Test
+    fun testDirtyFlag() {
+        val file = tempFolder.newFile("test_dirty.map")
+        val biMap = BiMapStringInt(TestIdGenerator(1), file)
+
+        // Initially not dirty
+        assertFalse(biMap.isDirty)
+
+        // Adding new key marks as dirty
+        biMap.findIdOrAdd("key1")
+        assertTrue(biMap.isDirty)
+
+        // Save resets dirty flag
+        biMap.save()
+        assertFalse(biMap.isDirty)
+
+        // Accessing existing key does not set dirty flag
+        biMap.findIdOrAdd("key1")
+        assertFalse(biMap.isDirty)
+
+        // Deleting file to test save skips when not dirty
+        assertTrue(file.delete())
+        biMap.save()
+        assertFalse(file.exists()) // save skipped because not dirty
+
+        // Adding a new key sets dirty flag again
+        biMap.findIdOrAdd("key2")
+        assertTrue(biMap.isDirty)
+
+        // Save recreates file and resets dirty flag
+        biMap.save()
+        assertFalse(biMap.isDirty)
+        assertTrue(file.exists())
+
+        // Loading from file starts with isDirty = false
+        val loadedBiMap = BiMapStringInt(TestIdGenerator(100), file)
+        assertFalse(loadedBiMap.isDirty)
     }
 }

@@ -1,12 +1,13 @@
 # o2omap (One-to-One Map Library)
 
-`o2omap` provides `BiMapStringInt`, a thread-safe 1:1 bidirectional mapping between string keys and integer IDs with file persistence.
+`o2omap` provides `BiMapStringInt`, a 1:1 bidirectional mapping between string keys and integer IDs with file persistence and dirty flag tracking.
 
 ## Features
 
-- **Bidirectional lookup**: String-to-Int and Int-to-String.
+- **Bidirectional lookup**: String-to-Int (`findId`, `findIdOrAdd`) and Int-to-String (`findOriginalId`).
 - **Auto ID generation**: Assigns unique integer IDs using `IUniqueIdGenerator`.
-- **Persistence**: Save to and load from text storage file with version header validation.
+- **Dirty Flag Optimization**: `isDirty` property tracks unsaved in-memory mutations. `save()` is a no-op if `isDirty` is `false`, avoiding unnecessary disk I/O operations.
+- **Persistence**: Save to and load from text storage file with `O2OMAP` header validation.
 - **Validation**: Enforces 1:1 mapping consistency.
 
 ## Dependencies
@@ -29,9 +30,12 @@ val generator = object : IUniqueIdGenerator {
 val file = File("mapping.map")
 val biMap = BiMapStringInt(generator, file)
 
-// Assign or retrieve ID
+// Assign or retrieve ID (sets isDirty = true if a new key is added)
 val id = biMap.findIdOrAdd("my_unique_string_key")
 
-// Save to disk
-biMap.save()
+// Check if unsaved changes exist
+if (biMap.isDirty) {
+    // Save to disk (resets isDirty = false upon success)
+    biMap.save()
+}
 ```

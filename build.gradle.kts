@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.trodevel.o2omap"
-version = "1.1.0"
+version = "1.2.0"
 
 android {
     namespace = "com.trodevel.o2omap"
